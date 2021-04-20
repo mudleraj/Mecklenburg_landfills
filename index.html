@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Active Landfills Near Charlotte (2020)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+    <style>
+html, body, #map { width: 100%; height: 100%; margin: 0; background: #fff; }
+    </style>
+    <script src="https://unpkg.com/leaflet@1.7.0/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/1.3.4/chroma.min.js"></script>
+</head>
+<body>
+<!-- Our web map and content will go here -->
+<div id="map"></div>
+<script>
+// 1. Create a map object.
+var mymap = L.map('map', {
+    center: [35.28541953401464, -80.84297379957509], //note that we've centered the map to downtown AVL
+    zoom: 10.5, //this line adjusts the starting zoom level of the map
+    maxZoom: 18,//this line sets the maximum zoom level
+    minZoom: 5,//this line sets the minimum zoom level
+    detectRetina: true // detect whether the sceen is high resolution or not.
+});
+
+// 2. Add a base map.
+L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png').addTo(mymap);
+
+var landfills = null;
+landfills = L.geoJson.ajax("assets/landfills.geojson",{
+pointToLayer: function(feature, latlng) {
+  return L.marker(latlng, {icon: L.divIcon({className: 'fas fa-truck-monster'})});
+  },
+    attribution: 'NC One Map | Map Author: Alex Mudler'
+});
+// Add the Airbnbs to the map.
+landfills.addTo(mymap);
+function setColor(density) {
+  return colors[id];
+}
+function style(feature) {
+    return {
+        fillOpacity: 0.4,
+        weight: 2,
+        opacity: 1,
+        color: '#b4b4b4',
+        dashArray: '4'
+    };
+}
+L.geoJson.ajax("assets/nc_counties.geojson").addTo(mymap);
+// 12. Add a scale bar to map
+L.control.scale({position: 'bottomleft'}).addTo(mymap);
+</script>
+</body>
+</html>
